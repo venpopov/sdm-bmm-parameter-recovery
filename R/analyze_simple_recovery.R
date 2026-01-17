@@ -1,7 +1,7 @@
 library(tidyverse)
 
 extract_var_df <- function(est_list, var) {
-  est <- lapply(estimates_list, \(x) x[paste0(var, "_Intercept"), ])
+  est <- lapply(est_list, \(x) x[paste0(var, "_Intercept"), ])
   est <- do.call(rbind, est)
   col_suffixes <- c("mean", "stder", "l95", "u95", "rhat", "bulk_ess", "tail_ess")
   colnames(est) <- paste0(var, "_", col_suffixes)
@@ -11,8 +11,8 @@ extract_var_df <- function(est_list, var) {
 
 preprocess_posterior_estimates <- function(results) {
   estimates_list <- lapply(results, \(x) x[[1]])
-  log_c <- extract_var_df(estimates_lis, "c")
-  log_kappa <- extract_var_df(estimates_lis, "kappa")
+  log_c <- extract_var_df(estimates_list, "c")
+  log_kappa <- extract_var_df(estimates_list, "kappa")
   divergences <- sapply(results, \(x) x[[2]])
   out <- cbind(
     data.frame(id = seq.int(nrow(log_c))),
